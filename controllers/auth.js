@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
 
     if (user) {
         console.log('User already exists')
-        return res.status(400).render('register',{msg : "User already exists"})
+        return res.status(400).render('register',{msg : `${req.body.email} already exists`})
     }
 
     const newUser = await Auth.create({...req.body})
