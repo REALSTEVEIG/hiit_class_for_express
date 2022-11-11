@@ -5,11 +5,17 @@ const app = express()
 const port = 3000
 const connectDB = require('./db/connect')
 const router = require('./routes/auth')
+const path = require('path')
+const {engine} = require('express-handlebars')
 
-app.use(express.static('public'))
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.use(express.json())
 app.use(express.urlencoded({extended : false}))
+
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 
 app.use('/', router)
 
