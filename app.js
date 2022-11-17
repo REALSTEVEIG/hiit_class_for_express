@@ -6,7 +6,10 @@ const port = 3000
 const connectDB = require('./db/connect')
 const router = require('./routes/auth')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 const {engine} = require('express-handlebars')
+const notFoundMiddleware = require('./middlewares/pagenotfound')
+const serverError = require('./middlewares/servererror')
 
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
@@ -17,7 +20,12 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
+app.use(cookieParser())
+
 app.use('/', router)
+app.use('*', notFoundMiddleware)
+
+app.use(serverError)
 
 const start = async () => {
     try {
